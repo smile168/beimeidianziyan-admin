@@ -16,13 +16,14 @@ export default async function DashboardLayout({
     redirect('/sign-in');
   }
 
+  const adminList = process.env.ADMIN_USERID_LIST!.split(',');
+
   const store = await prismadb.store.findFirst({
     where: {
       id: params.storeId,
-      userId,
+      userId: { in: adminList },
     },
   });
-
   if (!store) {
     redirect('/');
   }
